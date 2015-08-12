@@ -1,0 +1,27 @@
+# This file was automatically generated and dropped off by Chef!
+
+# PostgreSQL Client Authentication Configuration File
+# ===================================================
+#
+# Refer to the "Client Authentication" section in the PostgreSQL
+# documentation for a complete description of this file.
+
+<% if node['postgresql']['version'].to_f < 9.1 -%>
+# TYPE  DATABASE        USER            CIDR-ADDRESS            METHOD
+<% elsif node['postgresql']['version'].to_f >= 9.1 -%>
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+<% end -%>
+
+###########
+# Other authentication configurations taken from chef node defaults:
+###########
+local   all             postgres                                ident
+local   all             all                                     ident
+host    all             all             127.0.0.1/32            ident
+host    all             all             ::1/128                 ident
+# "local" is for Unix domain socket connections only
+<% if node['postgresql']['version'].to_f < 9.1 -%>
+local   all             all                                     ident
+<% elsif node['postgresql']['version'].to_f >= 9.1 -%>
+local   all             all                                     peer
+<% end -%>
